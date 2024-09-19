@@ -34,24 +34,17 @@ def atualizar_disciplina(nome, novos_creditos, nova_data):
 
 # Função para visualizar todas as disciplinas
 def visualizar_disciplinas():
-    if not disciplinas:
-        print("\nNão há disciplinas cadastradas.")
+    total_creditos = somar_creditos()
+    print("\nControle Acadêmico - Matrícula:\n")
+    for disciplina in disciplinas:
+        print(f"- {disciplina['nome']}")
+        print(f"    Quantidade de Créditos: {disciplina['creditos']}")
+        print(f"    Última alteração em: {disciplina['data']}\n")
+    print(f"Total de Créditos: {total_creditos}")
+    if 18 <= total_creditos <= 28:
+        print("Matrícula aprovada!")
     else:
-        total_creditos = somar_creditos()
-        print("\nControle Acadêmico - Matrícula:\n")
-        for disciplina in disciplinas:
-            print(f"- {disciplina['nome']}")
-            print(f"    Quantidade de Créditos: {disciplina['creditos']}")
-            print(f"    Última alteração em: {disciplina['data']}\n")
-        print(f"\nTotal de Créditos: {total_creditos}")
-        if 18 <= total_creditos <= 28:
-            print("Matrícula aprovada!")
-        else:
-            print("Matrícula não aprovada! Verifique a quantidade de créditos.")
-
-# Função para somar os créditos
-def somar_creditos():
-    return sum(disciplina['creditos'] for disciplina in disciplinas)
+        print("Matrícula não aprovada! Verifique a quantidade de créditos.")
 
 # Função para filtrar disciplinas
 def filtrar_disciplinas(opcao, valor):
@@ -62,11 +55,15 @@ def filtrar_disciplinas(opcao, valor):
     
     if disciplinas_filtradas:
         for disciplina in disciplinas_filtradas:
-            print(f"- {disciplina['nome']}")
+            print(f"\n- {disciplina['nome']}")
             print(f"    Quantidade de Créditos: {disciplina['creditos']}")
             print(f"    Última alteração em: {disciplina['data']}")
     else:
         print("Nenhuma disciplina encontrada com esses critérios.")
+
+# Função para somar os créditos
+def somar_creditos():
+    return sum(disciplina['creditos'] for disciplina in disciplinas)
 
 # Programa principal
 def menu():
@@ -87,24 +84,36 @@ def menu():
             adicionar_disciplina(nome, creditos, data)
         
         elif opcao == 2:
-            nome = input("Digite o nome da disciplina a remover: ")
-            remover_disciplina(nome)
+            if not disciplinas:
+                print("\nNão há disciplinas cadastradas.")
+            else:
+                nome = input("Digite o nome da disciplina a remover: ")
+                remover_disciplina(nome)
         
         elif opcao == 3:
-            nome = input("Digite o nome da disciplina a atualizar: ")
-            novos_creditos = int(input("Digite a nova quantidade de créditos: "))
-            nova_data = input("Digite a nova data de cadastro (dd-mm-yyyy): ")
-            atualizar_disciplina(nome, novos_creditos, nova_data)
+            if not disciplinas:
+                print("\nNão há disciplinas cadastradas.")
+            else:
+                nome = input("Digite o nome da disciplina a atualizar: ")
+                novos_creditos = int(input("Digite a nova quantidade de créditos: "))
+                nova_data = input("Digite a nova data de cadastro (dd-mm-yyyy): ")
+                atualizar_disciplina(nome, novos_creditos, nova_data)
         
         elif opcao == 4:
-            visualizar_disciplinas()
+            if not disciplinas:
+                print("\nNão há disciplinas cadastradas.")
+            else:
+                visualizar_disciplinas()
         
         elif opcao == 5:
-            print("1 - Filtrar por nome")
-            print("2 - Filtrar por data")
-            opcao_filtro = int(input("Escolha uma opção: "))
-            valor = input("Digite a data desejada: ")
-            filtrar_disciplinas(opcao_filtro, valor)
+            if not disciplinas:
+                print("\nNão há disciplinas cadastradas.")
+            else:
+                print("1 - Filtrar por nome")
+                print("2 - Filtrar por data\n")
+                opcao_filtro = int(input("Escolha uma opção: "))
+                valor = input("Digite a data desejada: ")
+                filtrar_disciplinas(opcao_filtro, valor)
 
         elif opcao == 0:
             print("Saindo...")

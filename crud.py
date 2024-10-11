@@ -3,13 +3,16 @@ disciplinas = []
 
 # Função para adicionar uma disciplina
 def adicionar_disciplina(nome, creditos, data):
-    if somar_creditos() + creditos > 28:
-        print("Erro: Número máximo de créditos excedido.")
-        return False
-    disciplina = {"nome": nome, "creditos": creditos, "data": data}
-    disciplinas.append(disciplina)
-    print("\nDisciplina adicionada com sucesso!")
-    return True
+    if validar_creditos(creditos):
+        if somar_creditos() + creditos > 28:
+            print("\nErro: Número máximo de créditos excedido.")
+            return False
+        disciplina = {"nome": nome, "creditos": creditos, "data": data}
+        disciplinas.append(disciplina)
+        print("\nDisciplina adicionada com sucesso!")
+        return True
+    print("\nErro: Quantidade de Créditos inválida.")
+    return False
 
 # Função para remover uma disciplina
 def remover_disciplina(nome):
@@ -50,8 +53,15 @@ def visualizar_disciplinas():
         print("Matrícula não aprovada! Verifique a quantidade de créditos.")
     return True
 
+# funcao para validar créditos negativos
+def validar_creditos(creditos):
+    if creditos < 0:
+        return False
+    return True
+
 # Função para filtrar disciplinas
 def filtrar_disciplinas(opcao, valor):
+  
     if opcao == 1:  # Filtrar por nome
         disciplinas_filtradas = [disciplina for disciplina in disciplinas if valor.lower() in disciplina["nome"].lower()]
         print("\nDisciplina " + valor + " com última alteração em:")
